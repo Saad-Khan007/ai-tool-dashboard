@@ -153,7 +153,7 @@ function Projects(props) {
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <MDBox>
           <MDTypography variant="h6" gutterBottom>
-            {/* {title} */}
+            {title}
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -167,7 +167,10 @@ function Projects(props) {
             p: 1,
           }}
         >
-          <FormControl style={{ width: "250px", padding: "8px", height: "60px" }}>
+          <FormControl
+            style={{ width: "250px", padding: "8px", height: "60px" }}
+            id="filter-change"
+          >
             <Select
               value={selectedFilter}
               onChange={handleFilterChange}
