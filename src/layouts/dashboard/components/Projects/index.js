@@ -153,7 +153,7 @@ function Projects(props) {
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <MDBox>
           <MDTypography variant="h6" gutterBottom>
-            {title}
+            Circut Stats
           </MDTypography>
         </MDBox>
       </MDBox>
