@@ -54,7 +54,7 @@ function Projects(props) {
       setTitle("Records");
       setColumns([
         { Header: "Keyword", accessor: "keyword", width: "40%", align: "left" },
-        { Header: "Email", accessor: "email", width: "40%", align: "left" },
+        { Header: "Users", accessor: "email", width: "40%", align: "left" },
         { Header: "Ingredients", accessor: "ingredients", width: "20%", align: "left" },
       ]);
       findAll();
