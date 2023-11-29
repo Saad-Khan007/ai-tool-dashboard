@@ -138,10 +138,10 @@ function Configurator() {
         px={3}
       >
         <MDBox>
-          <MDTypography variant="h5">Material UI Configurator</MDTypography>
-          <MDTypography variant="body2" color="text">
+          <MDTypography variant="h5">AI Tool Dashboard</MDTypography>
+          {/* <MDTypography variant="body2" color="text">
             See our dashboard options.
-          </MDTypography>
+          </MDTypography> */}
         </MDBox>
 
         <Icon

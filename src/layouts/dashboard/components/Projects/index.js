@@ -46,7 +46,7 @@ function Projects(props) {
   const [title, setTitle] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("Today");
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
@@ -174,9 +174,6 @@ function Projects(props) {
               displayEmpty
               style={{ width: "100%", height: "100%" }}
             >
-              <MenuItem value="" disabled>
-                Select Filter
-              </MenuItem>
               <MenuItem value="Today">Today</MenuItem>
               <MenuItem value="Yesterday">Yesterday</MenuItem>
               <MenuItem value="This Week">This Week</MenuItem>
