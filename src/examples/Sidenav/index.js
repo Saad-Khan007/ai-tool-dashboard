@@ -177,7 +177,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           (darkMode && !transparentSidenav && whiteSidenav)
         }
       />
-      <List>{renderRoutes}</List>
+      <List id="side-nav-list">{renderRoutes}</List>
     </SidenavRoot>
   );
 }
