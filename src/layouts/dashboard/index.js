@@ -43,23 +43,24 @@ function Dashboard() {
   const [keywords, setKeywordsCount] = useState(0);
   const [ingred, setingCount] = useState(0);
   const [total, setTotalCount] = useState(0);
-  const [mostsearchedingredients , setMostsearched]=useState(0);
+  const [mostsearchedingredients, setMostsearched] = useState(0);
 
   useEffect(() => {
-    findAll()
+    findAll();
   }, []);
 
   function findAll() {
-    axios.get('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/stats')
-    .then(function (response) {
-      if (response.data) {
-        setEmailCount(response.data.users.length)
-        setKeywordsCount(response.data.keywords.length)
-        setingCount(response.data.ingredients.length)
-        setTotalCount(response.data.total.length)
-        setMostsearched(response.data.mostSearchedIngredients)
-      }
-    })
+    axios
+      .get("https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/stats")
+      .then(function (response) {
+        if (response.data) {
+          setEmailCount(response.data.users.length);
+          setKeywordsCount(response.data.keywords.length);
+          setingCount(response.data.ingredients.length);
+          setTotalCount(response.data.total.length);
+          setMostsearched(response.data.mostSearchedIngredients);
+        }
+      });
   }
 
   return (
@@ -69,11 +70,7 @@ function Dashboard() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3.6}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title=" Users"
-                count={emails}
-              />
+              <ComplexStatisticsCard icon="leaderboard" title=" Users" count={emails} />
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3.6}>
@@ -93,7 +90,7 @@ function Dashboard() {
                 icon="leaderboard"
                 title="Most Searched Ingredient"
                 count={mostsearchedingredients}
-                countStyle={{ fontSize: '14px' }}
+                countStyle={{ fontSize: "14px" }}
               />
             </MDBox>
           </Grid>

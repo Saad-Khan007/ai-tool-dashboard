@@ -135,8 +135,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
-            </MDBox>
+            <MDBox pr={1}></MDBox>
           </MDBox>
         )}
       </Toolbar>

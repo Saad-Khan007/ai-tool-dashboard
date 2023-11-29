@@ -30,8 +30,6 @@ import typography from "assets/theme/base/typography";
 function Footer({ company, links }) {
   const { href, name } = company;
   const { size } = typography;
-
- 
   return (
     <MDBox
       width="100%"
@@ -41,7 +39,6 @@ function Footer({ company, links }) {
       alignItems="center"
       px={1.5}
     >
-    
       <MDBox
         component="ul"
         sx={({ breakpoints }) => ({
@@ -53,26 +50,21 @@ function Footer({ company, links }) {
           mt: 3,
           mb: 0,
           p: 0,
-
           [breakpoints.up("lg")]: {
             mt: 0,
           },
         })}
       >
-       
+        {" "}
       </MDBox>
     </MDBox>
   );
 }
-
 // Setting default values for the props of Footer
 Footer.defaultProps = {
   company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-  links: [
-  
-  ],
+  links: [],
 };
-
 // Typechecking props for the Footer
 Footer.propTypes = {
   company: PropTypes.objectOf(PropTypes.string),
