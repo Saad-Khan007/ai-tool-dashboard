@@ -110,10 +110,10 @@ function Dashboard() {
           </Grid>
           {showUserList && (
             <MDBox>
-              <Dialog onClose={() => setShowUserList(false)} open={showUserList}>
+              <Dialog id="user-list" onClose={() => setShowUserList(false)} open={showUserList}>
                 <DialogTitle>User List</DialogTitle>
                 <List sx={{ pt: 0 }}>
-                  {userEmail.map((email, index) => (
+                  {userEmail?.map((email, index) => (
                     <ListItem disableGutters key={index}>
                       <ListItemButton>
                         <ListItemAvatar>
@@ -160,5 +160,4 @@ function Dashboard() {
     </DashboardLayout>
   );
 }
-
 export default Dashboard;
