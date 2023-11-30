@@ -51,16 +51,19 @@ function Projects(props) {
 
   useEffect(() => {
     if (props.isAll) {
-      setTitle("Records");
+      setTitle("Circut stats");
       setColumns([
         { Header: "Keyword", accessor: "keyword", width: "40%", align: "left" },
         { Header: "Users", accessor: "email", width: "40%", align: "left" },
         { Header: "Ingredients", accessor: "ingredients", width: "20%", align: "left" },
       ]);
       findAll();
+    } else if (props.isEmail) {
+      setColumns([{ Header: "Email", accessor: "email", width: "45%", align: "left" }]);
+      setTitle("Users");
+      findEmailList();
     }
   }, []);
-
   const handleFilterChange = (event) => {
     const filterValue = event.target.value;
     setSelectedFilter(filterValue);
@@ -69,9 +72,10 @@ function Projects(props) {
       findAll(filterValue);
     }
   };
-
   useEffect(() => {
-    findAll(selectedFilter);
+    if (props.isAll) {
+      findAll(selectedFilter);
+    }
   }, [selectedFilter]);
 
   const findAll = (filter) => {
@@ -116,7 +120,6 @@ function Projects(props) {
       default:
         break;
     }
-
     axios
       .post(
         "https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/listall",
@@ -134,15 +137,23 @@ function Projects(props) {
       })
       .catch(function (error) {});
   };
+  function findEmailList() {
+    axios
+      .get("https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/listemails")
+      .then(function (response) {
+        displayData(response.data);
+      });
+  }
 
   function displayData(result) {
     const data = [];
     result.forEach((item, i) => {
       if (props.isAll) {
         data.push(item);
+      } else if (props.isEmail) {
+        data.push({ email: item });
       }
     });
-
     setRows(data);
   }
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
@@ -153,7 +164,7 @@ function Projects(props) {
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
         <MDBox>
           <MDTypography variant="h6" gutterBottom>
-            Circut Stats
+            {title}
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -196,7 +207,7 @@ function Projects(props) {
           table={{ columns, rows }}
           showTotalEntries={true}
           isSorted={true}
-          entriesPerPage={5}
+          entriesPerPage={{ defaultValue: 5, entries: [5, 10, 15, 20, 25] }}
         />
       </MDBox>
     </Card>
@@ -204,5 +215,6 @@ function Projects(props) {
 }
 Projects.propTypes = {
   isAll: PropTypes.bool.isRequired,
+  isEmail: PropTypes.bool.isRequired,
 };
 export default Projects;

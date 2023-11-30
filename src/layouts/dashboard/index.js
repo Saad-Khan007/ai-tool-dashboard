@@ -11,6 +11,8 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import React from "react";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
+import { BarChart } from "@mui/x-charts/BarChart";
+import MDTypography from "components/MDTypography";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
@@ -25,6 +27,8 @@ import Dialog from "@mui/material/Dialog";
 import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 import { blue } from "@mui/material/colors";
+import { Typography } from "@mui/material/Typography";
+
 function Dashboard() {
   const [openUserDialog, setOpenUserDialog] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState(null);
@@ -39,14 +43,17 @@ function Dashboard() {
   useEffect(() => {
     findAll();
   }, []);
+
   const handleUserDialogOpen = (user) => {
     setSelectedUser(user);
     setOpenUserDialog(true);
   };
+
   const handleUserDialogClose = () => {
     setSelectedUser(null);
     setOpenUserDialog(false);
   };
+
   function findAll() {
     axios
       .get("https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/stats")
@@ -122,6 +129,31 @@ function Dashboard() {
               </Dialog>
             </MDBox>
           )}
+        </MDBox>
+        <MDBox>
+          <Grid container spacing={3} justifyContent="flex-end" style={{ paddingTop: "40px" }}>
+            <Grid>
+              <Grid item xs={12}>
+                <MDTypography variant="h6" style={{ padding: "30px" }}>
+                  Circut Analytics
+                </MDTypography>
+              </Grid>
+              <BarChart
+                xAxis={[
+                  {
+                    scaleType: "band",
+                    data: ["Today", "This Week", "Last Week", "This Month"],
+                  },
+                ]}
+                series={[{ data: [5, 16, 23, 42] }]}
+                width={580}
+                height={500}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={5}>
+              <Projects isEmail={true} />
+            </Grid>
+          </Grid>
         </MDBox>
       </MDBox>
       <Footer />
