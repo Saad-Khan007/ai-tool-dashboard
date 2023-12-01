@@ -59,7 +59,10 @@ function Projects(props) {
       ]);
       findAll();
     } else if (props.isEmail) {
-      setColumns([{ Header: "Email", accessor: "email", width: "45%", align: "left" }]);
+      setColumns([
+        { Header: "Users", accessor: "user", width: "25%", align: "left" },
+        { Header: "Created", accessor: "created", width: "35%", align: "left" },
+      ]);
       setTitle("Users");
       findEmailList();
     }
@@ -151,9 +154,10 @@ function Projects(props) {
       if (props.isAll) {
         data.push(item);
       } else if (props.isEmail) {
-        data.push({ email: item });
+        data.push({ user: item.user, created: item.timestamp });
       }
     });
+    data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     setRows(data);
   }
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
