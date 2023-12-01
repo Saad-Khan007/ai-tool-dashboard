@@ -35,7 +35,7 @@ function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [emails, setEmailCount] = useState(0);
   const [keywords, setKeywordsCount] = useState(0);
-  const [userEmail, setuserEmail] = useState();
+  // const [userEmail, setuserEmail] = useState();
   const [ingred, setingCount] = useState(0);
   const [total, setTotalCount] = useState(0);
   const [mostsearchedingredients, setMostsearched] = useState(0);
@@ -64,7 +64,7 @@ function Dashboard() {
           setingCount(response.data.ingredients.length);
           setTotalCount(response.data.total.length);
           setMostsearched(response.data.mostSearchedIngredients);
-          setuserEmail(response.data.users);
+          // setuserEmail(response.data.users);
         }
       });
   }
@@ -73,7 +73,8 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3.6} onClick={() => setShowUserList(true)}>
+          <Grid item xs={12} md={6} lg={3.6}>
+            {/* onClick={() => setShowUserList(true)} */}
             <div>
               <MDBox mb={1.5}>
                 <ComplexStatisticsCard icon="leaderboard" title=" Users" count={emails} />
@@ -110,10 +111,10 @@ function Dashboard() {
           </Grid>
           {showUserList && (
             <MDBox>
-              <Dialog id="user-list" onClose={() => setShowUserList(false)} open={showUserList}>
+              <Dialog onClose={() => setShowUserList(false)} open={showUserList}>
                 <DialogTitle>User List</DialogTitle>
                 <List sx={{ pt: 0 }}>
-                  {userEmail?.map((email, index) => (
+                  {userEmail.map((email, index) => (
                     <ListItem disableGutters key={index}>
                       <ListItemButton>
                         <ListItemAvatar>
@@ -146,11 +147,11 @@ function Dashboard() {
                   },
                 ]}
                 series={[{ data: [5, 16, 23, 42] }]}
-                width={580}
+                width={500}
                 height={500}
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={5}>
+            <Grid item xs={12} md={6} lg={6}>
               <Projects isEmail={true} />
             </Grid>
           </Grid>
@@ -160,4 +161,5 @@ function Dashboard() {
     </DashboardLayout>
   );
 }
+
 export default Dashboard;
