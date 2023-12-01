@@ -24,6 +24,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
+import CircularProgress from "@mui/material/CircularProgress";
 import Select from "@mui/material/Select";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
@@ -47,15 +48,16 @@ function Projects(props) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedFilter, setSelectedFilter] = useState("Today");
+  const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     if (props.isAll) {
       setTitle("Circut stats");
       setColumns([
-        { Header: "Keyword", accessor: "keyword", width: "40%", align: "left" },
-        { Header: "Users", accessor: "email", width: "40%", align: "left" },
+        { Header: "Users", accessor: "email", width: "30%", align: "left" },
         { Header: "Ingredients", accessor: "ingredients", width: "20%", align: "left" },
+        { Header: "created", accessor: "timestamp", width: "20%", align: "left" },
       ]);
       findAll();
     } else if (props.isEmail) {
@@ -70,6 +72,7 @@ function Projects(props) {
   const handleFilterChange = (event) => {
     const filterValue = event.target.value;
     setSelectedFilter(filterValue);
+    setLoading(true);
 
     if (filterValue !== "Custom") {
       findAll(filterValue);
@@ -138,7 +141,8 @@ function Projects(props) {
       .then(function (response) {
         displayData(response.data);
       })
-      .catch(function (error) {});
+      .catch(function (error) {})
+      .finally(() => setLoading(false));
   };
   function findEmailList() {
     axios
@@ -149,16 +153,36 @@ function Projects(props) {
   }
 
   function displayData(result) {
+    setLoading(false);
     const data = [];
     result.forEach((item, i) => {
       if (props.isAll) {
+        if (item.timestamp) {
+          item.timestamp = formatFrontendTimestamp(item.timestamp);
+        }
         data.push(item);
       } else if (props.isEmail) {
+        if (item.timestamp) {
+          item.timestamp = formatFrontendTimestamp(item.timestamp);
+        }
         data.push({ user: item.user, created: item.timestamp });
       }
     });
     data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     setRows(data);
+  }
+  function formatFrontendTimestamp(timestampString) {
+    const date = new Date(timestampString);
+    const formattedDate = date.toLocaleString("en-US", {
+      timeZone: "UTC", // Ensure 'UTC' time zone
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    return formattedDate;
   }
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
@@ -182,24 +206,27 @@ function Projects(props) {
             p: 1,
           }}
         >
-          <FormControl
-            style={{ width: "250px", padding: "8px", height: "60px" }}
-            id="filter-change"
-          >
-            <Select
-              value={selectedFilter}
-              onChange={handleFilterChange}
-              displayEmpty
-              style={{ width: "100%", height: "100%" }}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <FormControl
+              style={{ width: "250px", padding: "8px", height: "60px" }}
+              id="filter-change"
             >
-              <MenuItem value="Today">Today</MenuItem>
-              <MenuItem value="Yesterday">Yesterday</MenuItem>
-              <MenuItem value="This Week">This Week</MenuItem>
-              <MenuItem value="Last Week">Last Week</MenuItem>
-              <MenuItem value="This Month">This Month</MenuItem>
-              <MenuItem value="Last Month">Last Month</MenuItem>
-            </Select>
-          </FormControl>
+              <Select
+                value={selectedFilter}
+                onChange={handleFilterChange}
+                displayEmpty
+                style={{ width: "100%", height: "100%" }}
+              >
+                <MenuItem value="Today">Today</MenuItem>
+                <MenuItem value="Yesterday">Yesterday</MenuItem>
+                <MenuItem value="This Week">This Week</MenuItem>
+                <MenuItem value="Last Week">Last Week</MenuItem>
+                <MenuItem value="This Month">This Month</MenuItem>
+                <MenuItem value="Last Month">Last Month</MenuItem>
+              </Select>
+            </FormControl>
+            {loading && <CircularProgress size={28} color="success" />}
+          </div>
           {selectedFilter === "Custom" && (
             <Box sx={{ display: "flex", alignItems: "center" }}></Box>
           )}
