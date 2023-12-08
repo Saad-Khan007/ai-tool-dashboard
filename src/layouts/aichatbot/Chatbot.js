@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 
 const Chatbot = () => {
   const [userQuestion, setUserQuestion] = useState("");
+  const [userGoal, setUserGoal] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
   const [responseIconVisible, setResponseIconVisible] = useState(false);
@@ -17,57 +18,104 @@ const Chatbot = () => {
     setUserQuestion("");
     setResponse("");
     setResponseIconVisible(false);
+    setUserGoal("");
   };
 
   const generateResponse = async () => {
+    setResponseIconVisible(false);
+    setResponse("");
     if (userQuestion.trim() === "") {
       setResponseIconVisible(false);
       document.getElementById("question").style.border = "2px solid red";
       return;
+    } else {
+      document.getElementById("question").style.border = "none";
     }
-    const prompt = `Explore the results of all peer-reviewed publications of ${userQuestion}. Additionally, suggest the amount of dosage, duration of usage, and their effects. Response should be a JSON object structure of response always this and strictly mention that no add any text outside the json object:
-    {
-      "studies": [
+    let prompt;
+    if (userGoal.trim() !== "") {
+      prompt = `Explore the results of all peer-reviewed publications of ${userQuestion} for ${userGoal}. Additionally, suggest the amount of dosage, duration of usage, and their effects. Response should be a JSON object structure of response always this and strictly mention that there is no any text outside the json object:
         {
-          "title": "",
-          "published_in": "",
-          "dosage": "",
-          "duration": "",
-          "effects": "",
-          "conclusion": ""
-        },
+          "studies": [
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            }
+          ],
+          "suggested_dosage": "",
+          "suggested_duration": "",
+          "common_effects": ""
+        }`;
+    } else {
+      prompt = `Explore the results of all peer-reviewed publications of ${userQuestion}. Additionally, suggest the amount of dosage, duration of usage, and their effects. Response should be a JSON object structure of response always this and strictly mention that there is no any text outside the json object:
         {
-          "title": "",
-          "published_in": "",
-          "dosage": "",
-          "duration": "",
-          "effects": "",
-          "conclusion": ""
-        },
-        {
-          "title": "",
-          "published_in": "",
-          "dosage": "",
-          "duration": "",
-          "effects": "",
-          "conclusion": ""
-        },
-        {
-          "title": "",
-          "published_in": "",
-          "dosage": "",
-          "duration": "",
-          "effects": "",
-          "conclusion": ""
-        }
-      ],
-      "suggested_dosage": "",
-      "suggested_duration": "",
-      "common_effects": ""
-    }`;
-
+          "studies": [
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            },
+            {
+              "title": "",
+              "published_in": "",
+              "dosage": "",
+              "duration": "",
+              "effects": "",
+              "conclusion": ""
+            }
+          ],
+          "suggested_dosage": "",
+          "suggested_duration": "",
+          "common_effects": ""
+        }`;
+    }
     const url = "https://api.openai.com/v1/chat/completions";
-    const apiKey = "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";
     const requestBody = {
       model: "gpt-4",
       messages: [
@@ -77,7 +125,7 @@ const Chatbot = () => {
         },
       ],
     };
-
+    document.getElementById("Button").disabled = true;
     console.log("Request Body:", JSON.stringify(requestBody));
     setLoading(true);
 
@@ -86,7 +134,7 @@ const Chatbot = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -94,11 +142,11 @@ const Chatbot = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+      setResponseIconVisible(true);
       const data = await response.json();
       const apiResponse = data.choices[0].message.content;
       console.log(apiResponse);
-      makeApiRequest(userQuestion, apiResponse, prompt);
+      makeApiRequest(userQuestion, userGoal, apiResponse, prompt);
       setResponse(apiResponse);
       setResponseIconVisible(true);
     } catch (error) {
@@ -109,17 +157,17 @@ const Chatbot = () => {
     }
   };
 
-  const makeApiRequest = async (userQuestion, apiResponse, prompt) => {
+  const makeApiRequest = async (userQuestion, userGoal, apiResponse, prompt) => {
     const targetUrl =
       "https://ap-southeast-1.aws.data.mongodb-api.com/app/data-pezxd/endpoint/publicationRecord";
     const data = {
       prompt: prompt,
       ingredients: userQuestion,
+      goal: userGoal,
       airesponse: apiResponse,
     };
 
     console.log(data);
-
     try {
       const response = await fetch(targetUrl, {
         method: "POST",
@@ -135,6 +183,7 @@ const Chatbot = () => {
 
       const result = await response.json();
       console.log("Data stored successfully:", result);
+      document.getElementById("Button").disabled = false;
     } catch (error) {
       console.error("Error:", error);
     }
@@ -145,7 +194,7 @@ const Chatbot = () => {
       <Box
         component="form"
         sx={{
-          "& > :not(style)": { m: 3, width: "30ch", height: "7ch" },
+          "& > :not(style)": { m: 3, width: "25ch", height: "7ch" },
         }}
         noValidate
         autoComplete="off"
@@ -160,7 +209,17 @@ const Chatbot = () => {
           value={userQuestion}
           onChange={(e) => setUserQuestion(e.target.value)}
         />
-        <Button variant="contained" color="success" onClick={generateResponse}>
+        <TextField
+          label="Goal e.g muscle strength ,fat burning"
+          variant="outlined"
+          fullWidth
+          className="input-goal"
+          type="text"
+          id="goal"
+          value={userGoal}
+          onChange={(e) => setUserGoal(e.target.value)}
+        />
+        <Button id="Button" variant="contained" color="success" onClick={generateResponse}>
           Search
         </Button>
         <Button
