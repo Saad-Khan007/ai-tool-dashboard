@@ -44,6 +44,7 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Chatbot from "layouts/aichatbot/Chatbot";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -57,15 +58,15 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
-  /*{
+  {
     type: "collapse",
-    name: "Tables",
+    name: "AI Chatbot",
     key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    icon: <Icon fontSize="small">chatbot</Icon>,
+    route: "/aichatbot",
     component: <Tables />,
   },
-  {
+  /*{
     type: "collapse",
     name: "Billing",
     key: "billing",

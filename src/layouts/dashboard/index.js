@@ -27,6 +27,7 @@ import Dialog from "@mui/material/Dialog";
 import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 import { blue } from "@mui/material/colors";
+
 import { Typography } from "@mui/material/Typography";
 
 function Dashboard() {
@@ -35,7 +36,6 @@ function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [emails, setEmailCount] = useState(0);
   const [keywords, setKeywordsCount] = useState(0);
-  // const [userEmail, setuserEmail] = useState();
   const [ingred, setingCount] = useState(0);
   const [total, setTotalCount] = useState(0);
   const [mostsearchedingredients, setMostsearched] = useState(0);
@@ -64,7 +64,6 @@ function Dashboard() {
           setingCount(response.data.ingredients.length);
           setTotalCount(response.data.total.length);
           setMostsearched(response.data.mostSearchedIngredients);
-          // setuserEmail(response.data.users);
         }
       });
   }
@@ -73,7 +72,7 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3.6}>
+          <Grid item xs={12} md={6} lg={4}>
             {/* onClick={() => setShowUserList(true)} */}
             <div>
               <MDBox mb={1.5}>
@@ -81,7 +80,7 @@ function Dashboard() {
               </MDBox>
             </div>
           </Grid>
-          <Grid item xs={12} md={6} lg={3.6}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
@@ -91,7 +90,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3.6}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
@@ -132,8 +131,8 @@ function Dashboard() {
           )}
         </MDBox>
         <MDBox>
-          <Grid container spacing={3} justifyContent="flex-end" style={{ paddingTop: "40px" }}>
-            <Grid>
+          <Grid container spacing={3} style={{ paddingTop: "40px" }}>
+            <Grid item xs={12} md={6} lg={6}>
               <Grid item xs={12}>
                 <MDTypography variant="h6" style={{ padding: "30px" }}>
                   Circut Analytics
