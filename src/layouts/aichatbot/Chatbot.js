@@ -67,7 +67,7 @@ const Chatbot = () => {
     }`;
 
     const url = "https://api.openai.com/v1/chat/completions";
-    const apiKey = "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";
+    const apiKey = "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";
     const requestBody = {
       model: "gpt-4",
       messages: [
