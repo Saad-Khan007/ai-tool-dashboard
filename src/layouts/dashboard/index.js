@@ -27,6 +27,7 @@ import Dialog from "@mui/material/Dialog";
 import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 import { blue } from "@mui/material/colors";
+
 import { Typography } from "@mui/material/Typography";
 
 function Dashboard() {
@@ -35,7 +36,6 @@ function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [emails, setEmailCount] = useState(0);
   const [keywords, setKeywordsCount] = useState(0);
-  // const [userEmail, setuserEmail] = useState();
   const [ingred, setingCount] = useState(0);
   const [total, setTotalCount] = useState(0);
   const [mostsearchedingredients, setMostsearched] = useState(0);
@@ -64,7 +64,6 @@ function Dashboard() {
           setingCount(response.data.ingredients.length);
           setTotalCount(response.data.total.length);
           setMostsearched(response.data.mostSearchedIngredients);
-          // setuserEmail(response.data.users);
         }
       });
   }

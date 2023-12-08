@@ -30,6 +30,7 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import Chatbot from "layouts/aichatbot/Chatbot";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -41,8 +42,9 @@ function Tables() {
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
+            <Chatbot />
             <Card>
-              <MDBox
+              {/* <MDBox
                 mx={2}
                 mt={-3}
                 py={3}
@@ -55,8 +57,8 @@ function Tables() {
                 <MDTypography variant="h6" color="white">
                   Authors Table
                 </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
+              </MDBox> */}
+              {/* <MDBox pt={3}>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={false}
@@ -64,10 +66,10 @@ function Tables() {
                   showTotalEntries={false}
                   noEndBorder
                 />
-              </MDBox>
+              </MDBox> */}
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Card>
               <MDBox
                 mx={2}
@@ -93,7 +95,7 @@ function Tables() {
                 />
               </MDBox>
             </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
       </MDBox>
       <Footer />
